@@ -1,0 +1,24 @@
+{
+  "name": "maddyzone-website",
+  "version": "1.0.0",
+  "description": "MaddyZone - Digital Solutions & Innovation Hub",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx http-server -p 8000 -o",
+    "dev": "npx live-server --port=8000",
+    "serve": "python3 server.py"
+  },
+  "keywords": [
+    "maddyzone",
+    "portfolio",
+    "web-development",
+    "tech-blog",
+    "resume-builder"
+  ],
+  "author": "Rituraj",
+  "license": "MIT",
+  "devDependencies": {
+    "http-server": "^14.1.1",
+    "live-server": "^1.2.2"
+  }
+}
