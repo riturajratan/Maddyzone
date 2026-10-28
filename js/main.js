@@ -1,357 +1,225 @@
-// Wait for DOM to load
-document.addEventListener('DOMContentLoaded', function() {
-    
-    // Mobile Navigation Toggle
-    const navToggle = document.getElementById('navToggle');
-    const navMenu = document.getElementById('navMenu');
-    
-    navToggle.addEventListener('click', function() {
-        navMenu.classList.toggle('active');
-        
-        // Animate hamburger menu
-        const spans = navToggle.querySelectorAll('span');
-        if (navMenu.classList.contains('active')) {
-            spans[0].style.transform = 'rotate(-45deg) translate(-5px, 6px)';
-            spans[1].style.opacity = '0';
-            spans[2].style.transform = 'rotate(45deg) translate(-5px, -6px)';
-        } else {
-            spans[0].style.transform = 'none';
-            spans[1].style.opacity = '1';
-            spans[2].style.transform = 'none';
-        }
-    });
-    
-    // Close mobile menu when clicking on a link
-    const navLinks = document.querySelectorAll('.nav-link');
-    navLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            navMenu.classList.remove('active');
-            const spans = navToggle.querySelectorAll('span');
-            spans[0].style.transform = 'none';
-            spans[1].style.opacity = '1';
-            spans[2].style.transform = 'none';
-        });
-    });
-    
-    // Navbar scroll effect
-    const navbar = document.getElementById('navbar');
-    let lastScroll = 0;
-    
-    window.addEventListener('scroll', function() {
-        const currentScroll = window.pageYOffset;
-        
-        if (currentScroll > 50) {
-            navbar.classList.add('scrolled');
-        } else {
-            navbar.classList.remove('scrolled');
-        }
-        
-        // Hide/show navbar on scroll
-        if (currentScroll > lastScroll && currentScroll > 200) {
-            navbar.style.transform = 'translateY(-100%)';
-        } else {
-            navbar.style.transform = 'translateY(0)';
-        }
-        
-        lastScroll = currentScroll;
-    });
-    
-    // Smooth scrolling for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                const offsetTop = target.offsetTop - 80;
-                window.scrollTo({
-                    top: offsetTop,
-                    behavior: 'smooth'
-                });
-            }
-        });
-    });
-    
-    // Active navigation link highlighting
-    const sections = document.querySelectorAll('section[id]');
-    
-    function highlightNav() {
-        const scrollY = window.pageYOffset;
-        
-        sections.forEach(section => {
-            const sectionHeight = section.offsetHeight;
-            const sectionTop = section.offsetTop - 100;
-            const sectionId = section.getAttribute('id');
-            
-            if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
-                document.querySelector('.nav-menu a[href*=' + sectionId + ']')?.classList.add('active');
-            } else {
-                document.querySelector('.nav-menu a[href*=' + sectionId + ']')?.classList.remove('active');
-            }
-        });
-    }
-    
-    window.addEventListener('scroll', highlightNav);
-    
-    // Back to top button
-    const backToTop = document.getElementById('backToTop');
-    
-    window.addEventListener('scroll', function() {
-        if (window.pageYOffset > 300) {
-            backToTop.classList.add('show');
-        } else {
-            backToTop.classList.remove('show');
-        }
-    });
-    
-    backToTop.addEventListener('click', function() {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    });
-    
-    // Form handling
-    const contactForm = document.getElementById('contactForm');
-    
-    if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Get form data
-            const formData = new FormData(this);
-            const data = Object.fromEntries(formData);
-            
-            // Here you would normally send the data to a server
-            console.log('Form submitted:', data);
-            
-            // Show success message
-            const button = this.querySelector('button[type="submit"]');
-            const originalText = button.innerHTML;
-            button.innerHTML = '<i class="fas fa-check"></i> Message Sent!';
-            button.disabled = true;
-            
-            // Reset form
-            this.reset();
-            
-            // Reset button after 3 seconds
-            setTimeout(() => {
-                button.innerHTML = originalText;
-                button.disabled = false;
-            }, 3000);
-        });
-    }
-    
-    // Newsletter form handling
-    const newsletterForms = document.querySelectorAll('.newsletter-form');
-    
-    newsletterForms.forEach(form => {
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const email = this.querySelector('input[type="email"]').value;
-            console.log('Newsletter subscription:', email);
-            
-            // Show success message
-            const button = this.querySelector('button[type="submit"]');
-            const originalText = button.textContent;
-            button.textContent = 'Subscribed!';
-            button.disabled = true;
-            
-            // Reset form
-            this.reset();
-            
-            // Reset button after 3 seconds
-            setTimeout(() => {
-                button.textContent = originalText;
-                button.disabled = false;
-            }, 3000);
-        });
-    });
-    
-    // Parallax effect for floating cards
-    const floatingCards = document.querySelectorAll('.card-float');
-    
-    window.addEventListener('mousemove', (e) => {
-        const mouseX = e.clientX / window.innerWidth;
-        const mouseY = e.clientY / window.innerHeight;
-        
-        floatingCards.forEach((card, index) => {
-            const speed = card.dataset.speed || 1;
-            const x = (mouseX - 0.5) * speed * 50;
-            const y = (mouseY - 0.5) * speed * 50;
-            
-            card.style.transform = `translate(${x}px, ${y}px)`;
-        });
-    });
-    
-    // Intersection Observer for fade-in animations
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -100px 0px'
-    };
-    
-    const observer = new IntersectionObserver(function(entries) {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-            }
-        });
-    }, observerOptions);
-    
-    // Observe elements with animation classes
-    const animatedElements = document.querySelectorAll('.project-card, .blog-card-large, .author-card, .tool-feature');
-    
-    animatedElements.forEach(el => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(30px)';
-        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        observer.observe(el);
-    });
-    
-    // Typing effect for hero title
-    const heroTitle = document.querySelector('.hero-title');
-    if (heroTitle) {
-        const text = heroTitle.innerHTML;
-        heroTitle.innerHTML = '';
-        let index = 0;
-        
-        function typeWriter() {
-            if (index < text.length) {
-                heroTitle.innerHTML = text.slice(0, index + 1);
-                index++;
-                setTimeout(typeWriter, 50);
-            }
-        }
-        
-        // Start typing effect after a short delay
-        setTimeout(typeWriter, 500);
-    }
-    
-    // Add ripple effect to buttons
-    const buttons = document.querySelectorAll('.btn');
-    
-    buttons.forEach(button => {
-        button.addEventListener('click', function(e) {
-            const ripple = document.createElement('span');
-            const rect = this.getBoundingClientRect();
-            const size = Math.max(rect.width, rect.height);
-            const x = e.clientX - rect.left - size / 2;
-            const y = e.clientY - rect.top - size / 2;
-            
-            ripple.style.width = ripple.style.height = size + 'px';
-            ripple.style.left = x + 'px';
-            ripple.style.top = y + 'px';
-            ripple.classList.add('ripple');
-            
-            // Add ripple styles dynamically
-            if (!document.querySelector('style[data-ripple]')) {
-                const style = document.createElement('style');
-                style.setAttribute('data-ripple', 'true');
-                style.textContent = `
-                    .ripple {
-                        position: absolute;
-                        border-radius: 50%;
-                        background: rgba(255, 255, 255, 0.5);
-                        transform: scale(0);
-                        animation: ripple-animation 0.6s ease-out;
-                        pointer-events: none;
-                    }
-                    @keyframes ripple-animation {
-                        to {
-                            transform: scale(4);
-                            opacity: 0;
-                        }
-                    }
-                    .btn {
-                        position: relative;
-                        overflow: hidden;
-                    }
-                `;
-                document.head.appendChild(style);
-            }
-            
-            this.appendChild(ripple);
-            
-            setTimeout(() => {
-                ripple.remove();
-            }, 600);
-        });
-    });
-    
-    // Lazy loading for images (placeholder for future implementation)
-    const lazyImages = document.querySelectorAll('img[data-src]');
-    
-    if (lazyImages.length > 0) {
-        const imageObserver = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const img = entry.target;
-                    img.src = img.dataset.src;
-                    img.removeAttribute('data-src');
-                    imageObserver.unobserve(img);
-                }
-            });
-        });
-        
-        lazyImages.forEach(img => imageObserver.observe(img));
-    }
-    
-    // Add keyboard navigation
-    document.addEventListener('keydown', function(e) {
-        // Escape key closes mobile menu
-        if (e.key === 'Escape' && navMenu.classList.contains('active')) {
-            navMenu.classList.remove('active');
-        }
-        
-        // Spacebar scrolls to next section
-        if (e.key === ' ' && !e.target.matches('input, textarea')) {
-            e.preventDefault();
-            const currentSection = Array.from(sections).find(section => {
-                const rect = section.getBoundingClientRect();
-                return rect.top > 100;
-            });
-            
-            if (currentSection) {
-                currentSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-        }
-    });
-    
-    // Performance optimization - throttle scroll events
-    let ticking = false;
-    
-    function requestTick(callback) {
-        if (!ticking) {
-            window.requestAnimationFrame(callback);
-            ticking = true;
-        }
-    }
-    
-    window.addEventListener('scroll', function() {
-        requestTick(function() {
-            ticking = false;
-        });
-    });
-    
-    // Add loading animation
-    window.addEventListener('load', function() {
-        document.body.classList.add('loaded');
-    });
-    
-    // Console Easter egg
-    console.log('%c Welcome to MaddyZone! 🚀', 'font-size: 20px; font-weight: bold; color: #6366f1;');
-    console.log('%c Built with ❤️ by Rituraj', 'font-size: 14px; color: #8b5cf6;');
-    console.log('%c Visit: https://riturajratan.com', 'font-size: 12px; color: #64748b;');
+"use strict";
+
+// Content and project links remain usable without JavaScript.
+document.documentElement.classList.add("has-js");
+const navToggle = document.getElementById("navToggle");
+const navMenu = document.getElementById("navMenu");
+
+function closeNavigation({ restoreFocus = false } = {}) {
+  navToggle.setAttribute("aria-expanded", "false");
+  navToggle.setAttribute("aria-label", "Open navigation");
+  navMenu.classList.remove("is-open");
+  if (restoreFocus) navToggle.focus();
+}
+
+navToggle.addEventListener("click", () => {
+  const isOpen = navToggle.getAttribute("aria-expanded") === "true";
+  navToggle.setAttribute("aria-expanded", String(!isOpen));
+  navToggle.setAttribute(
+    "aria-label",
+    isOpen ? "Open navigation" : "Close navigation",
+  );
+  navMenu.classList.toggle("is-open", !isOpen);
 });
 
-// Service Worker registration for PWA (optional)
-if ('serviceWorker' in navigator && window.location.protocol === 'https:') {
-    window.addEventListener('load', function() {
-        navigator.serviceWorker.register('/sw.js').then(function(registration) {
-            console.log('ServiceWorker registration successful');
-        }, function(err) {
-            console.log('ServiceWorker registration failed: ', err);
-        });
+navMenu.addEventListener("click", (event) => {
+  if (event.target.closest("a")) closeNavigation();
+});
+
+document.querySelector(".site-header .brand").addEventListener("click", () => {
+  closeNavigation();
+});
+
+document.addEventListener("keydown", (event) => {
+  if (
+    event.key === "Escape" &&
+    navToggle.getAttribute("aria-expanded") === "true"
+  ) {
+    closeNavigation({ restoreFocus: true });
+  }
+});
+
+document.addEventListener("click", (event) => {
+  if (!event.target.closest(".site-header")) closeNavigation();
+});
+
+window.matchMedia("(min-width: 761px)").addEventListener("change", (event) => {
+  if (event.matches) closeNavigation();
+});
+
+const filters = [...document.querySelectorAll("[data-filter]")];
+const projects = [...document.querySelectorAll("[data-category]")];
+const filterStatus = document.getElementById("filterStatus");
+
+filters.forEach((button) => {
+  button.addEventListener("click", () => {
+    const category = button.dataset.filter;
+    filters.forEach((filter) => {
+      const selected = filter === button;
+      filter.classList.toggle("is-active", selected);
+      filter.setAttribute("aria-pressed", String(selected));
     });
+    let visibleCount = 0;
+    projects.forEach((project) => {
+      const visible =
+        category === "all" || project.dataset.category === category;
+      project.hidden = !visible;
+      if (visible) visibleCount += 1;
+    });
+    filterStatus.textContent = `Showing ${visibleCount} ${visibleCount === 1 ? "project" : "projects"}.`;
+  });
+});
+
+// Preserve the older Tools anchor, including when a filter has hidden its card.
+function revealTools() {
+  if (window.location.hash === "#tools") filters[0].click();
 }
+window.addEventListener("hashchange", revealTools);
+revealTools();
+
+if ("IntersectionObserver" in window) {
+  const navLinks = [...document.querySelectorAll(".nav-link")];
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        const link = navLinks.find(
+          (item) => item.hash === `#${entry.target.id}`,
+        );
+        if (link) {
+          link.classList.toggle("is-current", entry.isIntersecting);
+          if (entry.isIntersecting)
+            link.setAttribute("aria-current", "location");
+          else link.removeAttribute("aria-current");
+        }
+      });
+    },
+    { rootMargin: "-15% 0px -65% 0px", threshold: 0 },
+  );
+  ["projects", "blog", "author"].forEach((id) =>
+    observer.observe(document.getElementById(id)),
+  );
+}
+
+document.getElementById("currentYear").textContent = String(
+  new Date().getFullYear(),
+);
+
+// A fixed, labelled example illustrates the product without sending visitor data.
+const aiExamples = {
+  frontend: {
+    experience: "Built responsive React dashboards and connected REST APIs.",
+    role: "Frontend developer",
+    skills: ["React", "Responsive UI", "REST APIs"],
+    summary:
+      "Frontend developer experienced in building responsive React dashboards and integrating REST APIs to deliver practical, connected interfaces.",
+  },
+  fullstack: {
+    experience:
+      "Built Node.js APIs, modelled PostgreSQL data, and shipped React screens.",
+    role: "Full stack developer",
+    skills: ["Node.js", "PostgreSQL", "React"],
+    summary:
+      "Full stack developer with experience building Node.js APIs, modelling PostgreSQL data, and delivering React interfaces across the application stack.",
+  },
+};
+const aiDemo = document.getElementById("aiDemo");
+const aiRun = document.getElementById("aiRun");
+const aiSampleButtons = [...document.querySelectorAll("[data-ai-example]")];
+const aiOutput = document.getElementById("aiOutput");
+const aiOutputText = document.getElementById("aiOutputText");
+const aiOutputStatus = document.getElementById("aiOutputStatus");
+const aiFlowCaption = document.getElementById("aiFlowCaption");
+const aiAnnouncement = document.getElementById("aiAnnouncement");
+let aiExample = "frontend";
+let aiTimers = [];
+
+function resetAiExample(key) {
+  aiTimers.forEach((timer) => window.clearTimeout(timer));
+  aiTimers = [];
+  aiExample = key;
+  const example = aiExamples[key];
+  document.getElementById("aiExperience").textContent = example.experience;
+  document.getElementById("aiRole").textContent = example.role;
+  document.getElementById("aiSkills").replaceChildren(
+    ...example.skills.map((skill) => {
+      const tag = document.createElement("span");
+      tag.textContent = skill;
+      return tag;
+    }),
+  );
+  aiSampleButtons.forEach((button) => {
+    const selected = button.dataset.aiExample === key;
+    button.classList.toggle("is-active", selected);
+    button.setAttribute("aria-pressed", String(selected));
+  });
+  aiDemo.dataset.state = "idle";
+  aiOutput.setAttribute("aria-busy", "false");
+  aiOutputText.textContent =
+    "See how the same experience can be presented for a specific role.";
+  aiOutputStatus.textContent = "Ready when you are";
+  aiFlowCaption.textContent = "A little context. A clearer story.";
+  aiAnnouncement.textContent = "";
+  aiRun.disabled = false;
+  aiRun.firstChild.textContent = "Tailor this sample ";
+}
+
+aiSampleButtons.forEach((button) => {
+  button.addEventListener("click", () =>
+    resetAiExample(button.dataset.aiExample),
+  );
+});
+
+aiRun.addEventListener("click", () => {
+  if (aiRun.disabled) return;
+  aiDemo.dataset.state = "processing";
+  aiOutput.setAttribute("aria-busy", "true");
+  aiOutputStatus.textContent = "Reading the example…";
+  aiFlowCaption.textContent = "Start with the experience.";
+  aiRun.disabled = true;
+  aiRun.firstChild.textContent = "Tailoring sample… ";
+  aiAnnouncement.textContent = "Preparing the sample summary.";
+  aiTimers.push(
+    window.setTimeout(() => {
+      aiOutputStatus.textContent = "Matching the role…";
+      aiFlowCaption.textContent = "Bring the relevant details forward.";
+    }, 750),
+  );
+  aiTimers.push(
+    window.setTimeout(() => {
+      const example = aiExamples[aiExample];
+      aiDemo.dataset.state = "complete";
+      aiOutput.setAttribute("aria-busy", "false");
+      aiOutputText.textContent = example.summary;
+      aiOutputStatus.textContent = "Sample ready to review ✓";
+      aiFlowCaption.textContent = "Same experience. A clearer story.";
+      aiRun.disabled = false;
+      aiRun.firstChild.textContent = "Run again ";
+      aiAnnouncement.textContent = `Sample ready. ${example.summary}`;
+      aiTimers = [];
+    }, 1850),
+  );
+});
+
+// The visitor can pause ambient animation; respect system motion preferences.
+const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
+const motionToggle = document.getElementById("motionToggle");
+const motionToggleLabel = document.getElementById("motionToggleLabel");
+let userPausedMotion = false;
+function updateMotion() {
+  const paused =
+    userPausedMotion || motionPreference.matches || document.hidden;
+  document.documentElement.classList.toggle("motion-paused", paused);
+  motionToggle.setAttribute("aria-pressed", String(paused));
+  motionToggle.setAttribute(
+    "aria-label",
+    paused ? "Resume animations" : "Pause animations",
+  );
+  motionToggleLabel.textContent = paused ? "Resume motion" : "Pause motion";
+}
+motionToggle.addEventListener("click", () => {
+  userPausedMotion = !userPausedMotion;
+  updateMotion();
+});
+motionPreference.addEventListener("change", updateMotion);
+document.addEventListener("visibilitychange", updateMotion);
+updateMotion();

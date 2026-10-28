@@ -1,132 +1,47 @@
-# MaddyZone Website
+# MaddyZone
 
-A modern, responsive website showcasing digital solutions, technical blog, and professional tools.
+The independent product and writing home of Rituraj Singh Ratan, at [maddyzone.com](https://maddyzone.com).
 
-## Features
+The homepage is a personal digital workshop with a white and green palette, an asymmetric hero, an illustrated project board, a two-column work directory, and a dark green AI lab. **Gurus Classes of English** appears in the hero, the main project spotlight, and the footer, alongside Resume Tailor AI, PDFForge, NextUp, and the technical blog.
 
-✨ **Modern Design**: Clean, professional layout with gradient effects and animations  
-📱 **Fully Responsive**: Optimized for all devices - desktop, tablet, and mobile  
-🚀 **Performance Optimized**: Fast loading with optimized assets and lazy loading  
-🔍 **SEO Ready**: Complete meta tags, structured data, and sitemap  
-💼 **Professional Sections**: Projects showcase, tech blog, tools, and author information  
-📊 **Google AdSense Ready**: Includes ads.txt for monetization  
+## Preview
 
-## Quick Start
+No installation or build is required. From this directory, run:
 
-### Option 1: Python Server (Recommended)
-```bash
-python3 server.py
-```
-The server will automatically open http://localhost:8000 in your browser.
-
-### Option 2: Node.js/npm
-```bash
-# Install dependencies (first time only)
-npm install
-
-# Start development server
-npm start
-# or
-npm run dev
+```sh
+python3 -m http.server 8000 --bind 127.0.0.1
 ```
 
-### Option 3: Direct File Access
-Simply open `index.html` in your web browser.
+Open http://127.0.0.1:8000. You can also open `index.html` directly. Google Fonts require an internet connection; system fonts provide a fallback. Images and icons are local.
 
-## Project Structure
+## Files
 
-```
-maddyzone-website/
-│
-├── index.html          # Main HTML file
-├── css/
-│   └── styles.css      # All styles
-├── js/
-│   └── main.js         # JavaScript functionality
-├── images/             # Image assets (add your images here)
-├── ads.txt             # Google AdSense verification
-├── server.py           # Python development server
-├── package.json        # Node.js configuration
-└── README.md           # This file
-```
+- `index.html` — homepage content, project links, metadata, and structured data.
+- `css/styles.css` — responsive layouts, project artwork, and reduced-motion support.
+- `js/main.js` — mobile navigation, project filters, the sample AI workflow, motion controls, active section links, and the current year.
+- `images/` — Rituraj’s portrait, the Gurus Classes logo, and the MaddyZone favicon.
+- `CNAME` — existing GitHub Pages domain configuration.
+- `ads.txt` — existing advertising verification.
 
-## Sections
+## Updating the page
 
-1. **Hero Section**: Eye-catching landing with animated elements
-2. **Projects**: Showcase of featured projects and services
-3. **Technical Blog**: Integration with tech-blog.maddyzone.com
-4. **Professional Tools**: Resume Tailor AI showcase
-5. **Author**: Information about Rituraj with links to personal site
-6. **Contact**: Contact form and information
-7. **Footer**: Links and newsletter subscription
+Edit project copy and URLs in `index.html`. Each project’s `data-category` matches a filter button’s `data-filter`. Update the displayed project count when adding or removing projects. Product previews are illustrative UI compositions. The Gurus Classes preview uses its real logo, teacher portrait, and homepage copy.
 
-## Deployment
+Contact links open the visitor’s email application with `contact@maddyzone.com` as the recipient. The site does not simulate message delivery or newsletter subscriptions.
 
-### For Production Deployment:
+Existing anchors `#home`, `#projects`, `#blog`, `#tools`, `#author`, and `#contact` are retained. The layout adapts to desktop, tablet, and mobile, with keyboard focus styles, an accessible menu toggle, and announced filter results.
 
-1. **Update URLs**: Replace localhost URLs with your actual domain
-2. **Add Images**: Place logo and other images in the `images/` directory
-3. **SSL Certificate**: Ensure HTTPS is enabled on your server
-4. **Optimize Assets**: Minify CSS and JavaScript for production
+## AI product preview
 
-### Hosting Options:
+The homepage includes an interactive Resume Tailor AI example, with two fixed samples, an animated input-to-summary flow, and a link to the actual product. It is explicitly labelled as an illustrative sample; it does not call a model or collect visitor data. Choosing another sample resets the preview and cancels pending steps.
 
-- **Static Hosting**: GitHub Pages, Netlify, Vercel
-- **Traditional Hosting**: Any web server (Apache, Nginx)
-- **Cloud Hosting**: AWS S3, Google Cloud Storage, Azure
+Visitors can pause animations. System reduced-motion preferences are respected, and ambient animation pauses when the page is hidden.
 
-## SEO Checklist
+## Validation
 
-✅ Meta tags for title and description  
-✅ Open Graph tags for social sharing  
-✅ Twitter Card meta tags  
-✅ Structured data (Schema.org)  
-✅ Canonical URL  
-✅ Mobile responsive design  
-✅ Fast loading speed  
-✅ ads.txt for Google AdSense  
-
-## Customization
-
-### Colors
-Edit CSS variables in `css/styles.css`:
-```css
-:root {
-    --primary-color: #6366f1;
-    --secondary-color: #8b5cf6;
-    /* ... other variables */
-}
+```sh
+node --check js/main.js
+git diff --check
 ```
 
-### Content
-- Update text content directly in `index.html`
-- Modify project cards in the Projects section
-- Update author information in the Author section
-
-### Adding New Sections
-1. Add HTML structure in `index.html`
-2. Add styles in `css/styles.css`
-3. Add functionality in `js/main.js`
-
-## Browser Support
-
-- Chrome (latest)
-- Firefox (latest)
-- Safari (latest)
-- Edge (latest)
-- Mobile browsers
-
-## License
-
-MIT License - feel free to use this template for your projects.
-
-## Author
-
-**Rituraj Singh Ratan**  
-Website: [riturajratan.com](https://www.riturajratan.com)
-
-## Links
-
-- Main Site: [maddyzone.com](https://maddyzone.com)
-- Tech Blog: [tech-blog.maddyzone.com](https://tech-blog.maddyzone.com)
-- Resume Builder: [resumetailorai.net](https://www.resumetailorai.net)
+This is a static GitHub Pages site; deployment uses the existing repository’s publishing configuration. Updating local files does not publish the site.
